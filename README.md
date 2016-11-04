@@ -54,7 +54,7 @@ functions in the reference implementation). The final head movement is ommitted 
 direction.
 - `quit` (3): Immediately quit the interpreter.
 - `output` (4): Advance the head, read argument A. Print the value of
-the A<sup>th cell to stdout.
+the A<sup>th</sup> cell to stdout.
 - `user_input` (5): Advance the head, read argument A. Read a line of user input
   into the A<sup>th</sup> cell.
 - `jump` (6): Advance the head, jump to the cell under the head.
