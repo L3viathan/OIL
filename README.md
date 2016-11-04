@@ -11,8 +11,8 @@ _Overly introspective language, version 2.0_
 A OIL file consists of a number of lines, seperated by newline characters.
 In general, any file is a valid OIL file, but most files won't do anything.
 The file is read in line-by-line by the interpreter, and the content of each
-line is put into a cell on the OIL band. When the script starts execution, the
-band can be imagined as a continuous sequence of fields, each of which holds
+line is put into a cell on the OIL tape. When the script starts execution, the
+tape can be imagined as a continuous sequence of fields, each of which holds
 the content of a line, but during execution, more fields can be added at any
 integer position.
 
@@ -21,7 +21,7 @@ that case the value of the line is that integer. Otherwise, the value of the
 line is a string. The only datatypes are strings and integers. Whenever a string
 contains only digits, it becomes an integer.
 
-The OIL band is equipped with a directional (by default: positive) read-write
+The OIL tape is equipped with a directional (by default: positive) read-write
 head that starts at position 0 (i.e. in the first line). Whenever this
 reference talks about _moving to the right_ etc., this has to be replaced by
 _moving left_ if the direction got negative (see `reverse`).

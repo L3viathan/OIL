@@ -11,7 +11,7 @@ class Quit(Exception):
 
 
 class Interpreter(object):
-    """OIL interpreter object holding a band and a head."""
+    """OIL interpreter object holding a tape and a head."""
 
     def __init__(self, debug=False):
         """
@@ -52,7 +52,7 @@ class Interpreter(object):
         return self.memory[self.pointer]
 
     def read_source(self, filename):
-        """Read a file into the band."""
+        """Read a file into the tape."""
         self.memory = defaultdict(int)
         with open(filename) as f:
             for index, line in enumerate(f):
