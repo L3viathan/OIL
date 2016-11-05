@@ -21,6 +21,7 @@ class Interpreter(object):
         function annotations.
         """
         self.debug = debug
+        self.parent = None
         self.codes = {}
         d = type(self).__dict__
         for key in d:
@@ -90,14 +91,20 @@ class Interpreter(object):
         """Print a cell value."""
         self._move_head()
         cell = self.intify(self._get())
-        print(self.memory[cell], end="")
+        if self.parent is None:
+            print(self.memory[cell], end="")
+        else:
+            self.parent.remote_write(self.memory[cell])
         self._move_head()
 
     def user_input(self) -> 5:
         """Read a line of input into a cell."""
         self._move_head()
         cell = self.intify(self._get())
-        i = input()
+        if self.parent is None:
+            i = input()
+        else:
+            i = self.parent.remote_read()
         try:
             self.memory[cell] = int(i)
         except:
@@ -178,12 +185,37 @@ class Interpreter(object):
         string = []
         counter = 0
         for pos in range(length):
-            string.append(str(memory[start+(pos*self.direction)]))
+            string.append(str(self.memory[start+(pos*self.direction)]))
         string = "".join(string)
         if string.isnumeric():
             string = int(string)
         self.memory[target] = string
         self._move_head()
+
+    def call(self) -> 14:
+        """Call a different file."""
+        self._move_head()
+        filename = self._get()
+        self._move_head()
+        self.write_to = self.intify(self._get())
+        self._move_head()
+        self.read_from = self.intify(self._get())
+        inter = Interpreter()
+        inter.remote_setup(self)
+        inter.run(filename)
+        self._move_head()
+
+    def remote_write(self, value):
+        self.memory[self.write_to] = value
+        self.write_to += self.direction
+
+    def remote_read(self):
+        value = self.memory[self.read_from]
+        self.read_from += self.direction
+        return value
+
+    def remote_setup(self, parent):
+        self.parent = parent
 
     def step(self):
         """Execute a single step."""

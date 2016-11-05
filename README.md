@@ -1,6 +1,6 @@
 #OIL
 
-_Overly introspective language, version 2.0_
+_Overly introspective language, version 2.1_
 
 ## Usage
 
@@ -75,3 +75,12 @@ the A<sup>th</sup> cell to stdout.
 - `implode` (13): Implode a string: Advance the head thrice, reading the next
   three values (A, B, C), and put the cell sequence that starts at cell A and
   is B cells long into cell C.
+- `call` (14): Call an external OIL script: Advance the head, read in the file
+  name (relative to the working directory). Advance the head again, read in the
+  starting location of that script to write to. Advance the head again, read in
+  the starting location of that script to read from. Then, a subinterpreter is
+  started with that script. Anytime it would print something, it instead writes
+  it to the main interpreter's writing location (advancing automatically).
+  Anytime it would expect user input, it instead reads it from the next cell in
+  the reading location. Effectively, this acts as a way to define something
+  like functions.
