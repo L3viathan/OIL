@@ -67,10 +67,14 @@ class Interpreter(object):
 
     def nop(self) -> 0:
         """Do nothing."""
+        if self.debug:
+            print("Nopping")
         self._move_head()
 
     def copy(self) -> 1:
         """Copy a value from one cell to another."""
+        if self.debug:
+            print("Copying")
         self._move_head()
         source = self.intify(self._get())
         self._move_head()
@@ -80,6 +84,8 @@ class Interpreter(object):
 
     def reverse(self) -> 2:
         """Invert the direction of the head movement."""
+        if self.debug:
+            print("Reversing")
         self.direction *= -1
         self._move_head()
 
@@ -89,6 +95,8 @@ class Interpreter(object):
 
     def output(self) -> 4:
         """Print a cell value."""
+        if self.debug:
+            print("Printing")
         self._move_head()
         cell = self.intify(self._get())
         if self.parent is None:
@@ -99,6 +107,8 @@ class Interpreter(object):
 
     def user_input(self) -> 5:
         """Read a line of input into a cell."""
+        if self.debug:
+            print("Reading user input")
         self._move_head()
         cell = self.intify(self._get())
         if self.parent is None:
@@ -115,24 +125,32 @@ class Interpreter(object):
         """Jump to a cell."""
         self._move_head()
         self.pointer = self.intify(self._get())
+        if self.debug:
+            print("Jumping to", self.pointer)
 
     def relative_jump(self) -> 7:
         """Jump some number of cells ahead."""
+        if self.debug:
+            print("Relative jump")
         self._move_head()
         self.pointer = self.direction * self.intify(self._get()) + self.pointer
 
     def increment(self) -> 8:
         """Increment a given cell."""
+        if self.debug:
+            print("Incrementing")
         self._move_head()
         cell = self.intify(self._get())
-        self.memory[cell] += 1
+        self.memory[cell] = self.intify(self.memory[cell]) + 1
         self._move_head()
 
     def decrement(self) -> 9:
         """Decrement a given cell."""
+        if self.debug:
+            print("Decrementing")
         self._move_head()
         cell = self.intify(self._get())
-        self.memory[cell] -= 1
+        self.memory[cell] = self.intify(self.memory[cell]) - 1
         self._move_head()
 
     def eq_jump(self) -> 10:
@@ -141,13 +159,16 @@ class Interpreter(object):
         cell1 = self.intify(self._get())
         self._move_head()
         cell2 = self.intify(self._get())
+        if self.debug:
+            print("Checking equality {} == {} ?".format(self.memory[cell1], self.memory[cell2]))
         if self.memory[cell1] != self.memory[cell2]:
             self._move_head()
         self.jump()
 
     def newline(self) -> 11:
         """Print a newline character."""
-        print("")
+        if self.parent is None:
+            print("")
         self._move_head()
 
     def explode(self) -> 12:
@@ -157,6 +178,8 @@ class Interpreter(object):
         Put their length and then the characters in cells starting from a
         given position.
         """
+        if self.debug:
+            print("Exploding")
         self._move_head()
         source = self.intify(self._get())
         self._move_head()
@@ -176,6 +199,8 @@ class Interpreter(object):
         Starting from a given cell and with a given length, join the values
         together in another cell.
         """
+        if self.debug:
+            print("Imploding")
         self._move_head()
         start = self.intify(self._get())
         self._move_head()
@@ -196,6 +221,8 @@ class Interpreter(object):
         """Call a different file."""
         self._move_head()
         filename = self._get()
+        if self.debug:
+            print("Calling", filename)
         self._move_head()
         self.write_to = self.intify(self._get())
         self._move_head()
@@ -225,7 +252,7 @@ class Interpreter(object):
         if self.debug:
             print([self.memory[i] for i in range(30)])
             print("pointer:", self.pointer)
-            print(action)
+            #print(action)
         action(self)
 
     def run(self, filename):
