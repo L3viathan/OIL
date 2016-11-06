@@ -68,7 +68,8 @@ the A<sup>th</sup> cell to stdout.
   read argument B. If the A<sup>th</sup> cell's content is equal to that of
   cell B, advance the head once, otherwise advance the head twice. Now jump to
   the cell under the head.
-- `newline` (11): Print a newline character.
+- `newline` (11): Print a newline character if this is the main script.
+  Otherwise behaves like a `nop`.
 - `explode` (12): Explode a cell: Advance the head twice, reading the next two
   values (A, B). Convert the value from cell A into a string. Put its length in
   cell B, and each of its characters seperately into cells after B.
