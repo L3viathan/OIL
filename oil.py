@@ -207,6 +207,8 @@ class Interpreter(object):
         length = self.intify(self._get())
         self._move_head()
         target = self.intify(self._get())
+        if self.debug:
+            print("Imploding from {} to {} (length {})".format(start, target, length))
         string = []
         counter = 0
         for pos in range(length):
@@ -250,7 +252,8 @@ class Interpreter(object):
             raise Quit()
         action = self.codes.get(self._get(), Interpreter.nop)
         if self.debug:
-            print([self.memory[i] for i in range(30)])
+            print(self.memory)
+            # print([self.memory[i] for i in range(70)])
             print("pointer:", self.pointer)
             #print(action)
         action(self)
