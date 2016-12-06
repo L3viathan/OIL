@@ -59,7 +59,7 @@ class Interpreter(object):
             for index, line in enumerate(f):
                 if self.debug and "#" in line:
                     line = line.split("#")[0]
-                line = line.strip()
+                line = line.rstrip("\n")
                 try:
                     self.memory[index] = int(line)
                 except:
