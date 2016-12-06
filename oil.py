@@ -214,8 +214,10 @@ class Interpreter(object):
         for pos in range(length):
             string.append(str(self.memory[start+(pos*self.direction)]))
         string = "".join(string)
-        if string.isnumeric():
+        try:
             string = int(string)
+        except:
+            pass
         self.memory[target] = string
         self._move_head()
 
