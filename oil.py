@@ -118,7 +118,7 @@ class Interpreter(object):
         if self.parent is None:
             i = input()
         else:
-            i = self.parent.remote_read()
+            i = str(self.parent.remote_read())
         if Interpreter.number.match(i):
             self.memory[cell] = int(i)
         else:
