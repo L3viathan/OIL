@@ -218,7 +218,7 @@ class Interpreter(object):
         for pos in range(length):
             string.append(str(self.memory[start+(pos*self.direction)]))
         string = "".join(string)
-        if Interpreter.number.match(value):
+        if Interpreter.number.match(string):
             string = int(string)
         else:
             pass
