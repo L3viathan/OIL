@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """OIL Reference implementation."""
 import sys
+import re
 from os.path import dirname, abspath, join
 from collections import defaultdict
 
@@ -13,6 +14,7 @@ class Quit(Exception):
 
 class Interpreter(object):
     """OIL interpreter object holding a tape and a head."""
+    number = re.compile('^(0|-?[1-9]\d*)$')
 
     def __init__(self, debug=False):
         """
@@ -38,9 +40,9 @@ class Interpreter(object):
     def intify(value):
         """Forcibly convert a value to an integer."""
         if type(value) == str:
-            try:
+            if Interpreter.number.match(value):
                 return int(value)
-            except:
+            else:
                 return 0
         else:
             return value
@@ -61,9 +63,9 @@ class Interpreter(object):
                 if self.debug and "#" in line:
                     line = line.split("#")[0]
                 line = line.rstrip("\n")
-                try:
+                if Interpreter.number.match(line):
                     self.memory[index] = int(line)
-                except:
+                else:
                     self.memory[index] = line
         self.path = dirname(filename)
 
@@ -117,9 +119,9 @@ class Interpreter(object):
             i = input()
         else:
             i = self.parent.remote_read()
-        try:
+        if Interpreter.number.match(i):
             self.memory[cell] = int(i)
-        except:
+        else:
             self.memory[cell] = i
         self._move_head()
 
@@ -216,9 +218,9 @@ class Interpreter(object):
         for pos in range(length):
             string.append(str(self.memory[start+(pos*self.direction)]))
         string = "".join(string)
-        try:
+        if Interpreter.number.match(value):
             string = int(string)
-        except:
+        else:
             pass
         self.memory[target] = string
         self._move_head()
