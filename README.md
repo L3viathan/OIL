@@ -85,3 +85,9 @@ the A<sup>th</sup> cell to stdout.
   Anytime it would expect user input, it instead reads it from the next cell in
   the reading location. Effectively, this acts as a way to define something
   like functions.
+
+## See also
+
+- [A blog post about OIL](https://gastrovec.github.io/esoteric-annoyances.html)
+- [OIL on the esolangs wiki](http://esolangs.org/wiki/OIL)
+- [oilrs, an OIL implementation in Rust](https://github.com/serprex/oilrs)
