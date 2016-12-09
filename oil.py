@@ -228,16 +228,19 @@ class Interpreter(object):
     def call(self) -> 14:
         """Call a different file."""
         self._move_head()
-        filename = abspath(join(self.path, self._get()))
+        filename = abspath(join(self.path, str(self._get())))
         if self.debug:
             print("Calling", filename)
         self._move_head()
         self.write_to = self.intify(self._get())
         self._move_head()
         self.read_from = self.intify(self._get())
-        inter = Interpreter()
-        inter.remote_setup(self)
-        inter.run(filename)
+        try:
+            inter = Interpreter()
+            inter.remote_setup(self)
+            inter.run(filename)
+        except:
+            pass
         self._move_head()
 
     def remote_write(self, value):
