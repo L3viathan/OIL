@@ -4,6 +4,7 @@ import sys
 import re
 from os.path import dirname, abspath, join
 from collections import defaultdict
+from random import randint
 
 
 class Quit(Exception):
@@ -241,6 +242,16 @@ class Interpreter(object):
             inter.run(filename)
         except:
             pass
+        self._move_head()
+
+    def random(self) -> 15:
+        """Set a cell to a random value."""
+        self._move_head()
+        cell = self.intify(self._get())
+        self._move_head()
+        top = self.intify(self._get())
+        if top >= 0:
+            self.memory[cell] = randint(0, top)
         self._move_head()
 
     def remote_write(self, value):
