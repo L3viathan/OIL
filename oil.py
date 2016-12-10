@@ -243,6 +243,54 @@ class Interpreter(object):
             pass
         self._move_head()
 
+    def ord(self) -> 16:
+        """
+        Turn a cell's string value into a "list" of unicode codepoints.
+
+        Put their length and then the codepoints in cells starting from a
+        given position.
+        """
+        self._move_head()
+        source = self.intify(self._get())
+        self._move_head()
+        target = self.intify(self._get())
+        string = str(self.memory[source])
+        self.memory[target] = len(string)
+        for index, char in enumerate(string):
+            self.memory[target+(index+1)*self.direction] = ord(char)
+        self._move_head()
+
+    def chr(self) -> 17:
+        """
+        Put a list of codepoints into a string
+
+        Starting from a given cell and with a given length, join the values
+        together in another cell.
+        """
+        if self.debug:
+            print("Imploding")
+        self._move_head()
+        start = self.intify(self._get())
+        self._move_head()
+        length = self.intify(self._get())
+        self._move_head()
+        target = self.intify(self._get())
+        string = []
+        counter = 0
+        for pos in range(length):
+            cp = self.intify(self.memory[start+(pos*self.direction)])
+            try:
+                string.append(chr(cp))
+            except:
+                string.append('\ufffd')
+        string = "".join(string)
+        if Interpreter.number.match(string):
+            string = int(string)
+        else:
+            pass
+        self.memory[target] = string
+        self._move_head()
+
     def remote_write(self, value):
         self.memory[self.write_to] = value
         self.write_to += self.direction
