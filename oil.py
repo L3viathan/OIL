@@ -4,6 +4,7 @@ import sys
 import re
 from os.path import dirname, abspath, join
 from collections import defaultdict
+from random import randint
 
 
 class Quit(Exception):
@@ -241,6 +242,64 @@ class Interpreter(object):
             inter.run(filename)
         except:
             pass
+        self._move_head()
+
+    def random(self) -> 15:
+        """Set a cell to a random value."""
+        self._move_head()
+        cell = self.intify(self._get())
+        self._move_head()
+        top = self.intify(self._get())
+        if top >= 0:
+            self.memory[cell] = randint(0, top)
+        self._move_head()
+
+    def ord(self) -> 16:
+        """
+        Turn a cell's string value into a "list" of unicode codepoints.
+
+        Put their length and then the codepoints in cells starting from a
+        given position.
+        """
+        self._move_head()
+        source = self.intify(self._get())
+        self._move_head()
+        target = self.intify(self._get())
+        string = str(self.memory[source])
+        self.memory[target] = len(string)
+        for index, char in enumerate(string):
+            self.memory[target+(index+1)*self.direction] = ord(char)
+        self._move_head()
+
+    def chr(self) -> 17:
+        """
+        Put a list of codepoints into a string
+
+        Starting from a given cell and with a given length, join the values
+        together in another cell.
+        """
+        if self.debug:
+            print("Imploding")
+        self._move_head()
+        start = self.intify(self._get())
+        self._move_head()
+        length = self.intify(self._get())
+        self._move_head()
+        target = self.intify(self._get())
+        string = []
+        counter = 0
+        for pos in range(length):
+            cp = self.intify(self.memory[start+(pos*self.direction)])
+            try:
+                string.append(chr(cp))
+            except:
+                string.append('\ufffd')
+        string = "".join(string)
+        if Interpreter.number.match(string):
+            string = int(string)
+        else:
+            pass
+        self.memory[target] = string
         self._move_head()
 
     def remote_write(self, value):
