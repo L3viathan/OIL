@@ -59,7 +59,7 @@ class Interpreter(object):
     def read_source(self, filename):
         """Read a file into the tape."""
         self.memory = defaultdict(int)
-        with open(filename) as f:
+        with open(filename, newline="\n") as f:
             for index, line in enumerate(f):
                 if self.debug and "#" in line:
                     line = line.split("#")[0]
@@ -105,7 +105,7 @@ class Interpreter(object):
         self._move_head()
         cell = self.intify(self._get())
         if self.parent is None:
-            print(self.memory[cell], end="")
+            print(self.memory[cell], end="", flush=True)
         else:
             self.parent.remote_write(self.memory[cell])
         self._move_head()
