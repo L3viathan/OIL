@@ -85,6 +85,7 @@ the A<sup>th</sup> cell to stdout.
   Anytime it would expect user input, it instead reads it from the next cell in
   the reading location. Effectively, this acts as a way to define something
   like functions.
+- `random` (15): Fill a given cell with a random value: First read the cell address, then an inclusive upper bound. Fill the cell with a pseudorandom number between 0 and that number. If the upper bound is negative, this is a nop instead.
 
 ## See also
 
