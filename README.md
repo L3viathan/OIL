@@ -1,6 +1,6 @@
 #OIL
 
-_Overly introspective language, version 2.1_
+_Overly introspective language, version 2.2_
 
 ## Usage
 
@@ -85,7 +85,18 @@ the A<sup>th</sup> cell to stdout.
   Anytime it would expect user input, it instead reads it from the next cell in
   the reading location. Effectively, this acts as a way to define something
   like functions.
-- `random` (15): Fill a given cell with a random value: First read the cell address, then an inclusive upper bound. Fill the cell with a pseudorandom number between 0 and that number. If the upper bound is negative, this is a nop instead.
+- `random` (15): Fill a given cell with a random value: First read the cell
+  address, then an inclusive upper bound. Fill the cell with a pseudorandom
+  number between 0 and that number. If the upper bound is negative, this is a
+  nop instead.
+- `ord` (16): Advance the head twice, reading the next two values (A, B).
+  Convert the value from cell A into a string. Put its length in cell B, and
+  each of the numeric values of the codepoints of its characters seperately
+  into cells after B.
+- `chr` (17): Advance the head thrice, reading the next three values (A, B, C),
+  and put the codepoint sequence that starts at cell A and is B cells long into
+  cell C, converted into the characters of that codepoint. An invalid codepoint
+  maps to `U+FFFD`.
 
 ## See also
 
