@@ -2,7 +2,7 @@
 """OIL Reference implementation."""
 import sys
 import re
-from os.path import dirname, abspath, join
+from os.path import dirname, join, exists, realpath
 from collections import defaultdict
 from random import randint
 
@@ -27,6 +27,7 @@ class Interpreter(object):
         self.debug = debug
         self.parent = None
         self.codes = {}
+        self.lib = join(dirname(realpath(__file__)), 'lib')
         d = type(self).__dict__
         for key in d:
             try:
@@ -229,7 +230,10 @@ class Interpreter(object):
     def call(self) -> 14:
         """Call a different file."""
         self._move_head()
-        filename = abspath(join(self.path, str(self._get())))
+        fname = str(self._get())
+        filename = realpath(join(self.path, fname))
+        if not exists(filename):
+            filename = realpath(join(self.lib, fname))
         if self.debug:
             print("Calling", filename)
         self._move_head()
