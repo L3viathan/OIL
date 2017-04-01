@@ -1,6 +1,6 @@
 #OIL
 
-_Overly introspective language, version 2.2_
+_Overly introspective language, version 2.3_
 
 ## Usage
 
@@ -77,14 +77,15 @@ the A<sup>th</sup> cell to stdout.
   three values (A, B, C), and put the cell sequence that starts at cell A and
   is B cells long into cell C.
 - `call` (14): Call an external OIL script: Advance the head, read in the file
-  name (relative to the working directory). Advance the head again, read in the
-  starting location of that script to write to. Advance the head again, read in
-  the starting location of that script to read from. Then, a subinterpreter is
-  started with that script. Anytime it would print something, it instead writes
-  it to the main interpreter's writing location (advancing automatically).
-  Anytime it would expect user input, it instead reads it from the next cell in
-  the reading location. Effectively, this acts as a way to define something
-  like functions.
+  name (relative to the working directory, or, if the file doesn't exist,
+  relative to the location of the standard library). Advance the head again,
+  read in the starting location of that script to write to. Advance the head
+  again, read in the starting location of that script to read from. Then, a
+  subinterpreter is started with that script. Anytime it would print something,
+  it instead writes it to the main interpreter's writing location (advancing
+  automatically). Anytime it would expect user input, it instead reads it from
+  the next cell in the reading location. Effectively, this acts as a way to
+  define something like functions.
 - `random` (15): Fill a given cell with a random value: First read the cell
   address, then an inclusive upper bound. Fill the cell with a pseudorandom
   number between 0 and that number. If the upper bound is negative, this is a
@@ -97,6 +98,23 @@ the A<sup>th</sup> cell to stdout.
   and put the codepoint sequence that starts at cell A and is B cells long into
   cell C, converted into the characters of that codepoint. An invalid codepoint
   maps to `U+FFFD`.
+
+## Standard Library
+
+Starting with version 2.3, OIL comes with a small set of predefined OIL files
+called the Standard Library. In this reference implementation, these files are
+located in the `lib` folder.
+
+The Standard Library contains some basic arithmetics operations, string handling
+and some miscellaneous functions. Read the source code of the files to find out
+more. Hah.
+
+For the most part, these files adhere to the convention of printing newlines
+between outputs, in order to be callable directly, since the newline command
+(11) is ignored in sub-interpreter mode. Note however that the OIL interpreter
+will only try locating files in the Standard Library folder if called using the
+call command (14), not when called directly: Executing `oil.py add` will look
+for a file called `add` _only_ in the working directory.
 
 ## See also
 
