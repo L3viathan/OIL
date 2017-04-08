@@ -116,6 +116,10 @@ will only try locating files in the Standard Library folder if called using the
 call command (14), not when called directly: Executing `oil.py add` will look
 for a file called `add` _only_ in the working directory.
 
+## License
+
+The interpreter is released under the MIT License, see LICENSE.md.
+
 ## See also
 
 - [A blog post about OIL](https://gastrovec.github.io/esoteric-annoyances.html)
