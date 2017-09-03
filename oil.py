@@ -193,9 +193,7 @@ class Interpreter(object):
         string = str(self.memory[source])
         self.memory[target] = len(string)
         for index, char in enumerate(string):
-            if char.isnumeric():
-                char = int(char)
-            self.memory[target+(index+1)*self.direction] = char
+            self.memory[target+(index+1)*self.direction] = int(char) if char.isnumeric() else char
         self._move_head()
 
     def implode(self) -> 13:
@@ -215,11 +213,7 @@ class Interpreter(object):
         target = self.intify(self._get())
         if self.debug:
             print("Imploding from {} to {} (length {})".format(start, target, length))
-        string = []
-        counter = 0
-        for pos in range(length):
-            string.append(str(self.memory[start+(pos*self.direction)]))
-        string = "".join(string)
+        string = "".join(str(self.memory[start+(pos*self.direction)]) for pos in range(length))
         if Interpreter.number.match(string):
             string = int(string)
         else:
@@ -291,7 +285,6 @@ class Interpreter(object):
         self._move_head()
         target = self.intify(self._get())
         string = []
-        counter = 0
         for pos in range(length):
             cp = self.intify(self.memory[start+(pos*self.direction)])
             try:
