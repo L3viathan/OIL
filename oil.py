@@ -9,13 +9,12 @@ from random import randint
 
 class Quit(Exception):
     """Exception used for exiting."""
-
     pass
 
 
 class Interpreter(object):
     """OIL interpreter object holding a tape and a head."""
-    number = re.compile('^(0|-?[1-9]\d*)$')
+    number = re.compile(r'^(0|-?[1-9]\d*)$')
 
     def __init__(self, debug=False):
         """
@@ -41,13 +40,11 @@ class Interpreter(object):
     @staticmethod
     def intify(value):
         """Forcibly convert a value to an integer."""
-        if type(value) == str:
+        if isinstance(value, str):
             if Interpreter.number.match(value):
                 return int(value)
-            else:
-                return 0
-        else:
-            return value
+            return 0
+        return value
 
     def _move_head(self):
         """Advance the head."""
@@ -289,7 +286,7 @@ class Interpreter(object):
             cp = self.intify(self.memory[start+(pos*self.direction)])
             try:
                 string.append(chr(cp))
-            except:
+            except ValueError:
                 string.append('\ufffd')
         string = "".join(string)
         if Interpreter.number.match(string):
@@ -318,9 +315,7 @@ class Interpreter(object):
         action = self.codes.get(self._get(), Interpreter.nop)
         if self.debug:
             print(self.memory)
-            # print([self.memory[i] for i in range(70)])
             print("pointer:", self.pointer)
-            #print(action)
         action(self)
 
     def run(self, filename):
@@ -337,11 +332,8 @@ class Interpreter(object):
 
 if __name__ == '__main__':
     if len(sys.argv) > 1:
-        filename = sys.argv[1]
-        if len(sys.argv) > 2:
-            debug = True
-        else:
-            debug = False
-        Interpreter(debug=debug).run(filename)
+        FILENAME = sys.argv[1]
+        DEBUG = len(sys.argv) > 2
+        Interpreter(debug=DEBUG).run(FILENAME)
     else:
         print(Interpreter().codes)
